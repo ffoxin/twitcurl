@@ -1,8 +1,0 @@
-﻿  urlencode.cpp
-  twitcurl.cpp
-  SHA1.cpp
-  oauthlib.cpp
-  HMAC_SHA1.cpp
-  base64.cpp
-  Generating Code...
-  twitcurl.vcxproj -> D:\projects\twitcurl\Debug\twitcurl.lib
