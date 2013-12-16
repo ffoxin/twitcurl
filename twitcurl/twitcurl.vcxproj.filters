@@ -21,13 +21,7 @@
     <ClCompile Include="base64.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HMAC_SHA1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="oauthlib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SHA1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="twitcurl.cpp">
@@ -41,13 +35,7 @@
     <ClInclude Include="base64.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HMAC_SHA1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="oauthlib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SHA1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="twitcurl.h">

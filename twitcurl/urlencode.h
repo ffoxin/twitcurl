@@ -1,10 +1,9 @@
-#ifndef __URLENCODE_H__
-#define __URLENCODE_H__
+#ifndef URLENCODE_H
+#define URLENCODE_H
 
 #include <iostream>
 #include <string>
 
-std::string char2hex( char dec );
-std::string urlencode( const std::string &c );
+std::string urlencode(const std::string& url);
 
-#endif // __URLENCODE_H__
+#endif // URLENCODE_H

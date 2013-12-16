@@ -1,5 +1,5 @@
-#ifndef _TWITCURLURLS_H_
-#define _TWITCURLURLS_H_
+#ifndef TWITCURLURLS_H
+#define TWITCURLURLS_H
 
 #include <string>
 #include <cstring>
@@ -20,12 +20,14 @@ namespace twitCurlDefaults
     const std::string TWITCURL_SEARCHQUERYSTRING = "q=";
     const std::string TWITCURL_SCREENNAME = "screen_name=";
     const std::string TWITCURL_USERID = "user_id=";
-    const std::string TWITCURL_EXTENSIONFORMATS[2] = { ".json",
-                                                       ".xml"
-                                                     };
-    const std::string TWITCURL_PROTOCOLS[2] =        { "https://",
-                                                       "http://"
-                                                     };
+    const std::string TWITCURL_EXTENSIONFORMATS[2] = { 
+        ".json",
+        ".xml"
+    };
+    const std::string TWITCURL_PROTOCOLS[2] = { 
+        "https://",
+        "http://"
+    };
     const std::string TWITCURL_TARGETSCREENNAME = "target_screen_name=";
     const std::string TWITCURL_TARGETUSERID = "target_id=";
     const std::string TWITCURL_SINCEID = "since_id=";
@@ -122,6 +124,7 @@ namespace oAuthLibDefaults
     /* Constants */
     const int OAUTHLIB_BUFFSIZE = 1024;
     const int OAUTHLIB_BUFFSIZE_LARGE = 1024;
+    const int OAUTHLIB_SHA1_DIGEST_SIZE = 20;
     const std::string OAUTHLIB_CONSUMERKEY_KEY = "oauth_consumer_key";
     const std::string OAUTHLIB_CALLBACK_KEY = "oauth_callback";
     const std::string OAUTHLIB_VERSION_KEY = "oauth_version";
@@ -153,4 +156,4 @@ namespace oAuthTwitterApiUrls
     const std::string OAUTHLIB_TWITTER_ACCESS_TOKEN_URL = "api.twitter.com/oauth/access_token";
 };
 
-#endif // _TWITCURLURLS_H_
+#endif // TWITCURLURLS_H

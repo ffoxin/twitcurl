@@ -1,6 +1,7 @@
+#include <openssl/hmac.h>
+
 #include "twitcurlurls.h"
 #include "oauthlib.h"
-#include "HMAC_SHA1.h"
 #include "base64.h"
 #include "urlencode.h"
 
@@ -52,7 +53,7 @@ oAuth oAuth::clone()
     cloneObj.m_oAuthPin = m_oAuthPin;
     cloneObj.m_nonce = m_nonce;
     cloneObj.m_timeStamp = m_timeStamp;
-    cloneObj.m_oAuthScreenName =  m_oAuthScreenName;
+    cloneObj.m_oAuthScreenName = m_oAuthScreenName;
     return cloneObj;
 }
 
@@ -67,7 +68,7 @@ oAuth oAuth::clone()
 * @output: consumer key
 *
 *--*/
-void oAuth::getConsumerKey( std::string& consumerKey )
+void oAuth::getConsumerKey(std::string& consumerKey)
 {
     consumerKey = m_consumerKey;
 }
@@ -82,9 +83,9 @@ void oAuth::getConsumerKey( std::string& consumerKey )
 * @output: none
 *
 *--*/
-void oAuth::setConsumerKey( const std::string& consumerKey )
+void oAuth::setConsumerKey(const std::string& consumerKey)
 {
-    m_consumerKey.assign( consumerKey );
+    m_consumerKey.assign(consumerKey);
 }
 
 /*++
@@ -97,7 +98,7 @@ void oAuth::setConsumerKey( const std::string& consumerKey )
 * @output: consumer secret
 *
 *--*/
-void oAuth::getConsumerSecret( std::string& consumerSecret )
+void oAuth::getConsumerSecret(std::string& consumerSecret)
 {
     consumerSecret = m_consumerSecret;
 }
@@ -112,7 +113,7 @@ void oAuth::getConsumerSecret( std::string& consumerSecret )
 * @output: none
 *
 *--*/
-void oAuth::setConsumerSecret( const std::string& consumerSecret )
+void oAuth::setConsumerSecret(const std::string& consumerSecret)
 {
     m_consumerSecret = consumerSecret;
 }
@@ -127,7 +128,7 @@ void oAuth::setConsumerSecret( const std::string& consumerSecret )
 * @output: OAuth token
 *
 *--*/
-void oAuth::getOAuthTokenKey( std::string& oAuthTokenKey )
+void oAuth::getOAuthTokenKey(std::string& oAuthTokenKey)
 {
     oAuthTokenKey = m_oAuthTokenKey;
 }
@@ -142,7 +143,7 @@ void oAuth::getOAuthTokenKey( std::string& oAuthTokenKey )
 * @output: none
 *
 *--*/
-void oAuth::setOAuthTokenKey( const std::string& oAuthTokenKey )
+void oAuth::setOAuthTokenKey(const std::string& oAuthTokenKey)
 {
     m_oAuthTokenKey = oAuthTokenKey;
 }
@@ -157,7 +158,7 @@ void oAuth::setOAuthTokenKey( const std::string& oAuthTokenKey )
 * @output: OAuth token secret
 *
 *--*/
-void oAuth::getOAuthTokenSecret( std::string& oAuthTokenSecret )
+void oAuth::getOAuthTokenSecret(std::string& oAuthTokenSecret)
 {
     oAuthTokenSecret = m_oAuthTokenSecret;
 }
@@ -172,7 +173,7 @@ void oAuth::getOAuthTokenSecret( std::string& oAuthTokenSecret )
 * @output: none
 *
 *--*/
-void oAuth::setOAuthTokenSecret( const std::string& oAuthTokenSecret )
+void oAuth::setOAuthTokenSecret(const std::string& oAuthTokenSecret)
 {
     m_oAuthTokenSecret = oAuthTokenSecret;
 }
@@ -187,7 +188,7 @@ void oAuth::setOAuthTokenSecret( const std::string& oAuthTokenSecret )
 * @output: screen name
 *
 *--*/
-void oAuth::getOAuthScreenName( std::string& oAuthScreenName )
+void oAuth::getOAuthScreenName(std::string& oAuthScreenName)
 {
     oAuthScreenName = m_oAuthScreenName;
 }
@@ -202,7 +203,7 @@ void oAuth::getOAuthScreenName( std::string& oAuthScreenName )
 * @output: none
 *
 *--*/
-void oAuth::setOAuthScreenName( const std::string& oAuthScreenName )
+void oAuth::setOAuthScreenName(const std::string& oAuthScreenName)
 {
     m_oAuthScreenName = oAuthScreenName;
 }
@@ -217,7 +218,7 @@ void oAuth::setOAuthScreenName( const std::string& oAuthScreenName )
 * @output: OAuth verifier PIN
 *
 *--*/
-void oAuth::getOAuthPin( std::string& oAuthPin )
+void oAuth::getOAuthPin(std::string& oAuthPin)
 {
     oAuthPin = m_oAuthPin;
 }
@@ -232,7 +233,7 @@ void oAuth::getOAuthPin( std::string& oAuthPin )
 * @output: none
 *
 *--*/
-void oAuth::setOAuthPin( const std::string& oAuthPin )
+void oAuth::setOAuthPin(const std::string& oAuthPin)
 {
     m_oAuthPin = oAuthPin;
 }
@@ -253,15 +254,15 @@ void oAuth::generateNonceTimeStamp()
 {
     char szTime[oAuthLibDefaults::OAUTHLIB_BUFFSIZE];
     char szRand[oAuthLibDefaults::OAUTHLIB_BUFFSIZE];
-    memset( szTime, 0, oAuthLibDefaults::OAUTHLIB_BUFFSIZE );
-    memset( szRand, 0, oAuthLibDefaults::OAUTHLIB_BUFFSIZE );
-    srand( (unsigned int)time( NULL ) );
-    sprintf( szRand, "%x", rand()%1000 );
-    sprintf( szTime, "%ld", time( NULL ) );
+    memset(szTime, 0, oAuthLibDefaults::OAUTHLIB_BUFFSIZE);
+    memset(szRand, 0, oAuthLibDefaults::OAUTHLIB_BUFFSIZE);
+    srand((unsigned int)time(NULL));
+    sprintf(szRand, "%x", rand() % 1000);
+    sprintf(szTime, "%ld", time(NULL));
 
-    m_nonce.assign( szTime );
-    m_nonce.append( szRand );
-    m_timeStamp.assign( szTime );
+    m_nonce.assign(szTime);
+    m_nonce.append(szRand);
+    m_timeStamp.assign(szTime);
 }
 
 /*++
@@ -281,12 +282,12 @@ void oAuth::generateNonceTimeStamp()
 * @remarks: internal method
 *
 *--*/
-void oAuth::buildOAuthRawDataKeyValPairs( const std::string& rawData,
-                                          bool urlencodeData,
-                                          oAuthKeyValuePairs& rawDataKeyValuePairs )
+void oAuth::buildOAuthRawDataKeyValPairs(const std::string& rawData,
+                                         bool urlencodeData,
+                                         oAuthKeyValuePairs& rawDataKeyValuePairs)
 {
     /* Raw data if it's present. Data should already be urlencoded once */
-    if( rawData.empty() )
+    if (rawData.empty())
     {
         return;
     }
@@ -299,36 +300,36 @@ void oAuth::buildOAuthRawDataKeyValPairs( const std::string& rawData,
 
     /* This raw data part can contain many key value pairs: key1=value1&key2=value2&key3=value3 */
     std::string dataPart = rawData;
-    while( std::string::npos != ( nSep = dataPart.find_first_of("&") ) )
+    while (std::string::npos != (nSep = dataPart.find_first_of("&")))
     {
         /* Extract first key=value pair */
-        dataKeyVal = dataPart.substr( 0, nSep );
+        dataKeyVal = dataPart.substr(0, nSep);
 
         /* Split them */
-        nPos = dataKeyVal.find_first_of( "=" );
-        if( std::string::npos != nPos )
+        nPos = dataKeyVal.find_first_of("=");
+        if (std::string::npos != nPos)
         {
-            dataKey = dataKeyVal.substr( 0, nPos );
-            dataVal = dataKeyVal.substr( nPos + 1 );
+            dataKey = dataKeyVal.substr(0, nPos);
+            dataVal = dataKeyVal.substr(nPos + 1);
 
             /* Put this key=value pair in map */
-            rawDataKeyValuePairs[dataKey] = urlencodeData ? urlencode( dataVal ) : dataVal;
+            rawDataKeyValuePairs[dataKey] = urlencodeData ? urlencode(dataVal) : dataVal;
         }
-        dataPart = dataPart.substr( nSep + 1 );
+        dataPart = dataPart.substr(nSep + 1);
     }
 
     /* For the last key=value */
-    dataKeyVal = dataPart.substr( 0, nSep );
+    dataKeyVal = dataPart.substr(0, nSep);
 
     /* Split them */
-    nPos = dataKeyVal.find_first_of( "=" );
-    if( std::string::npos != nPos )
+    nPos = dataKeyVal.find_first_of("=");
+    if (std::string::npos != nPos)
     {
-        dataKey = dataKeyVal.substr( 0, nPos );
-        dataVal = dataKeyVal.substr( nPos + 1 );
+        dataKey = dataKeyVal.substr(0, nPos);
+        dataVal = dataKeyVal.substr(nPos + 1);
 
         /* Put this key=value pair in map */
-        rawDataKeyValuePairs[dataKey] = urlencodeData ? urlencode( dataVal ) : dataVal;
+        rawDataKeyValuePairs[dataKey] = urlencodeData ? urlencode(dataVal) : dataVal;
     }
 }
 
@@ -349,13 +350,13 @@ void oAuth::buildOAuthRawDataKeyValPairs( const std::string& rawData,
 * @remarks: internal method
 *
 *--*/
-bool oAuth::buildOAuthTokenKeyValuePairs( const bool includeOAuthVerifierPin,
-                                          const std::string& oauthSignature,
-                                          oAuthKeyValuePairs& keyValueMap,
-                                          const bool generateTimestamp )
+bool oAuth::buildOAuthTokenKeyValuePairs(const bool includeOAuthVerifierPin,
+                                         const std::string& oauthSignature,
+                                         oAuthKeyValuePairs& keyValueMap,
+                                         const bool generateTimestamp)
 {
     /* Generate nonce and timestamp if required */
-    if( generateTimestamp )
+    if (generateTimestamp)
     {
         generateNonceTimeStamp();
     }
@@ -367,31 +368,31 @@ bool oAuth::buildOAuthTokenKeyValuePairs( const bool includeOAuthVerifierPin,
     keyValueMap[oAuthLibDefaults::OAUTHLIB_NONCE_KEY] = m_nonce;
 
     /* Signature if supplied */
-    if( oauthSignature.length() )
+    if (oauthSignature.length())
     {
         keyValueMap[oAuthLibDefaults::OAUTHLIB_SIGNATURE_KEY] = oauthSignature;
     }
 
     /* Signature method, only HMAC-SHA1 as of now */
-    keyValueMap[oAuthLibDefaults::OAUTHLIB_SIGNATUREMETHOD_KEY] = std::string( "HMAC-SHA1" );
+    keyValueMap[oAuthLibDefaults::OAUTHLIB_SIGNATUREMETHOD_KEY] = std::string("HMAC-SHA1");
 
     /* Timestamp */
     keyValueMap[oAuthLibDefaults::OAUTHLIB_TIMESTAMP_KEY] = m_timeStamp;
 
     /* Token */
-    if( m_oAuthTokenKey.length() )
+    if (m_oAuthTokenKey.length())
     {
         keyValueMap[oAuthLibDefaults::OAUTHLIB_TOKEN_KEY] = m_oAuthTokenKey;
     }
 
     /* Verifier */
-    if( includeOAuthVerifierPin && m_oAuthPin.length() )
+    if (includeOAuthVerifierPin && m_oAuthPin.length())
     {
         keyValueMap[oAuthLibDefaults::OAUTHLIB_VERIFIER_KEY] = m_oAuthPin;
     }
 
     /* Version */
-    keyValueMap[oAuthLibDefaults::OAUTHLIB_VERSION_KEY] = std::string( "1.0" );
+    keyValueMap[oAuthLibDefaults::OAUTHLIB_VERSION_KEY] = std::string("1.0");
 
     return !keyValueMap.empty();
 }
@@ -410,10 +411,10 @@ bool oAuth::buildOAuthTokenKeyValuePairs( const bool includeOAuthVerifierPin,
 * @remarks: internal method
 *
 *--*/
-bool oAuth::getSignature( const eOAuthHttpRequestType eType,
-                          const std::string& rawUrl,
-                          const oAuthKeyValuePairs& rawKeyValuePairs,
-                          std::string& oAuthSignature )
+bool oAuth::getSignature(const eOAuthHttpRequestType eType,
+                         const std::string& rawUrl,
+                         const oAuthKeyValuePairs& rawKeyValuePairs,
+                         std::string& oAuthSignature)
 {
     std::string rawParams;
     std::string paramsSeperator;
@@ -424,65 +425,55 @@ bool oAuth::getSignature( const eOAuthHttpRequestType eType,
 
     /* Build a string using key-value pairs */
     paramsSeperator = "&";
-    getStringFromOAuthKeyValuePairs( rawKeyValuePairs, rawParams, paramsSeperator );
+    getStringFromOAuthKeyValuePairs(rawKeyValuePairs, rawParams, paramsSeperator);
 
     /* Start constructing base signature string. Refer http://dev.twitter.com/auth#intro */
-    switch( eType )
+    switch (eType)
     {
     case eOAuthHttpGet:
-        {
-            sigBase.assign( "GET&" );
-        }
+        sigBase.assign("GET&");
         break;
 
     case eOAuthHttpPost:
-        {
-            sigBase.assign( "POST&" );
-        }
+        sigBase.assign("POST&");
         break;
 
     case eOAuthHttpDelete:
-        {
-            sigBase.assign( "DELETE&" );
-        }
+        sigBase.assign("DELETE&");
         break;
 
     default:
-        {
-            return false;
-        }
-        break;
+        return false;
     }
-    sigBase.append( urlencode( rawUrl ) );
-    sigBase.append( "&" );
-    sigBase.append( urlencode( rawParams ) );
+
+    sigBase.append(urlencode(rawUrl));
+    sigBase.append("&");
+    sigBase.append(urlencode(rawParams));
 
     /* Now, hash the signature base string using HMAC_SHA1 class */
-    CHMAC_SHA1 objHMACSHA1;
     std::string secretSigningKey;
-    unsigned char strDigest[oAuthLibDefaults::OAUTHLIB_BUFFSIZE_LARGE];
-
-    memset( strDigest, 0, oAuthLibDefaults::OAUTHLIB_BUFFSIZE_LARGE );
+    unsigned char digest[oAuthLibDefaults::OAUTHLIB_SHA1_DIGEST_SIZE] = { };
 
     /* Signing key is composed of consumer_secret&token_secret */
-    secretSigningKey.assign( m_consumerSecret );
-    secretSigningKey.append( "&" );
-    if( m_oAuthTokenSecret.length() )
+    secretSigningKey.assign(m_consumerSecret);
+    secretSigningKey.append("&");
+    if (m_oAuthTokenSecret.length())
     {
-        secretSigningKey.append( m_oAuthTokenSecret );
+        secretSigningKey.append(m_oAuthTokenSecret);
     }
-  
-    objHMACSHA1.HMAC_SHA1( (unsigned char*)sigBase.c_str(),
-                           sigBase.length(),
-                           (unsigned char*)secretSigningKey.c_str(),
-                           secretSigningKey.length(),
-                           strDigest ); 
+
+    HMAC(EVP_sha1(),
+         secretSigningKey.c_str(),
+         secretSigningKey.length(),
+         (const unsigned char *)sigBase.c_str(),
+         sigBase.length(),
+         digest, NULL);
 
     /* Do a base64 encode of signature */
-    std::string base64Str = base64_encode( strDigest, 20 /* SHA 1 digest is 160 bits */ );
+    std::string base64Str = base64_encode(std::string((char *)digest));
 
     /* Do an url encode */
-    oAuthSignature = urlencode( base64Str );
+    oAuthSignature = urlencode(base64Str);
 
     return !oAuthSignature.empty();
 }
@@ -501,58 +492,58 @@ bool oAuth::getSignature( const eOAuthHttpRequestType eType,
 * @output: oAuthHttpHeader - OAuth header
 *
 *--*/
-bool oAuth::getOAuthHeader( const eOAuthHttpRequestType eType,
-                            const std::string& rawUrl,
-                            const std::string& rawData,
-                            std::string& oAuthHttpHeader,
-                            const bool includeOAuthVerifierPin )
+bool oAuth::getOAuthHeader(const eOAuthHttpRequestType eType,
+                           const std::string& rawUrl,
+                           const std::string& rawData,
+                           std::string& oAuthHttpHeader,
+                           const bool includeOAuthVerifierPin)
 {
     oAuthKeyValuePairs rawKeyValuePairs;
     std::string rawParams;
     std::string oauthSignature;
     std::string paramsSeperator;
-    std::string pureUrl( rawUrl );
+    std::string pureUrl(rawUrl);
 
     /* Clear header string initially */
     oAuthHttpHeader = "";
     rawKeyValuePairs.clear();
 
     /* If URL itself contains ?key=value, then extract and put them in map */
-    size_t nPos = rawUrl.find_first_of( "?" );
-    if( std::string::npos != nPos )
+    size_t nPos = rawUrl.find_first_of("?");
+    if (std::string::npos != nPos)
     {
         /* Get only URL */
-        pureUrl = rawUrl.substr( 0, nPos );
+        pureUrl = rawUrl.substr(0, nPos);
 
         /* Get only key=value data part */
-        std::string dataPart = rawUrl.substr( nPos + 1 );
+        std::string dataPart = rawUrl.substr(nPos + 1);
 
         /* Split the data in URL as key=value pairs */
-        buildOAuthRawDataKeyValPairs( dataPart, true, rawKeyValuePairs );
+        buildOAuthRawDataKeyValPairs(dataPart, true, rawKeyValuePairs);
     }
 
     /* Split the raw data if it's present, as key=value pairs. Data should already be urlencoded once */
-    buildOAuthRawDataKeyValPairs( rawData, false, rawKeyValuePairs );
+    buildOAuthRawDataKeyValPairs(rawData, false, rawKeyValuePairs);
 
     /* Build key-value pairs needed for OAuth request token, without signature */
-    buildOAuthTokenKeyValuePairs( includeOAuthVerifierPin, std::string( "" ), rawKeyValuePairs, true );
+    buildOAuthTokenKeyValuePairs(includeOAuthVerifierPin, std::string(""), rawKeyValuePairs, true);
 
     /* Get url encoded base64 signature using request type, url and parameters */
-    getSignature( eType, pureUrl, rawKeyValuePairs, oauthSignature );
+    getSignature(eType, pureUrl, rawKeyValuePairs, oauthSignature);
 
     /* Clear map so that the parameters themselves are not sent along with the OAuth values */
     rawKeyValuePairs.clear();
 
     /* Now, again build key-value pairs with signature this time */
-    buildOAuthTokenKeyValuePairs( includeOAuthVerifierPin, oauthSignature, rawKeyValuePairs, false );
+    buildOAuthTokenKeyValuePairs(includeOAuthVerifierPin, oauthSignature, rawKeyValuePairs, false);
 
     /* Get OAuth header in string format */
     paramsSeperator = ",";
-    getStringFromOAuthKeyValuePairs( rawKeyValuePairs, rawParams, paramsSeperator );
+    getStringFromOAuthKeyValuePairs(rawKeyValuePairs, rawParams, paramsSeperator);
 
     /* Build authorization header */
-    oAuthHttpHeader.assign( oAuthLibDefaults::OAUTHLIB_AUTHHEADER_STRING );
-    oAuthHttpHeader.append( rawParams );
+    oAuthHttpHeader.assign(oAuthLibDefaults::OAUTHLIB_AUTHHEADER_STRING);
+    oAuthHttpHeader.append(rawParams);
 
     return !oAuthHttpHeader.empty();
 }
@@ -570,12 +561,12 @@ bool oAuth::getOAuthHeader( const eOAuthHttpRequestType eType,
 * @remarks: internal method
 *
 *--*/
-bool oAuth::getStringFromOAuthKeyValuePairs( const oAuthKeyValuePairs& rawParamMap,
-                                             std::string& rawParams,
-                                             const std::string& paramsSeperator )
+bool oAuth::getStringFromOAuthKeyValuePairs(const oAuthKeyValuePairs& rawParamMap,
+                                            std::string& rawParams,
+                                            const std::string& paramsSeperator)
 {
     rawParams = "";
-    if( rawParamMap.empty() )
+    if (rawParamMap.empty())
     {
         return false;
     }
@@ -586,20 +577,20 @@ bool oAuth::getStringFromOAuthKeyValuePairs( const oAuthKeyValuePairs& rawParamM
     /* Push key-value pairs to a list of strings */
     keyValueList.clear();
     oAuthKeyValuePairs::const_iterator itMap = rawParamMap.begin();
-    for( ; itMap != rawParamMap.end(); itMap++ )
+    for (; itMap != rawParamMap.end(); itMap++)
     {
-        dummyStr.assign( itMap->first );
-        dummyStr.append( "=" );
-        if( paramsSeperator == "," )
+        dummyStr.assign(itMap->first);
+        dummyStr.append("=");
+        if (paramsSeperator == ",")
         {
-            dummyStr.append( "\"" );
+            dummyStr.append("\"");
         }
-        dummyStr.append( itMap->second );
-        if( paramsSeperator == "," )
+        dummyStr.append(itMap->second);
+        if (paramsSeperator == ",")
         {
-            dummyStr.append( "\"" );
+            dummyStr.append("\"");
         }
-        keyValueList.push_back( dummyStr );
+        keyValueList.push_back(dummyStr);
     }
 
     /* Sort key-value pairs based on key name */
@@ -608,13 +599,13 @@ bool oAuth::getStringFromOAuthKeyValuePairs( const oAuthKeyValuePairs& rawParamM
     /* Now, form a string */
     dummyStr = "";
     oAuthKeyValueList::iterator itKeyValue = keyValueList.begin();
-    for( ; itKeyValue != keyValueList.end(); itKeyValue++ )
+    for (; itKeyValue != keyValueList.end(); itKeyValue++)
     {
-        if( dummyStr.length() )
+        if (dummyStr.length())
         {
-            dummyStr.append( paramsSeperator );
-         }
-         dummyStr.append( itKeyValue->c_str() );
+            dummyStr.append(paramsSeperator);
+        }
+        dummyStr.append(itKeyValue->c_str());
     }
     rawParams = dummyStr;
     return !rawParams.empty();
@@ -631,48 +622,48 @@ bool oAuth::getStringFromOAuthKeyValuePairs( const oAuthKeyValuePairs& rawParamM
 * @output: none
 *
 *--*/
-bool oAuth::extractOAuthTokenKeySecret( const std::string& requestTokenResponse )
+bool oAuth::extractOAuthTokenKeySecret(const std::string& requestTokenResponse)
 {
-    if( requestTokenResponse.empty() )
+    if (requestTokenResponse.empty())
     {
         return false;
     }
 
-    size_t nPos = std::string::npos;
+    size_t nPos;
     std::string strDummy;
 
     /* Get oauth_token key */
-    nPos = requestTokenResponse.find( oAuthLibDefaults::OAUTHLIB_TOKEN_KEY );
-    if( std::string::npos != nPos )
+    nPos = requestTokenResponse.find(oAuthLibDefaults::OAUTHLIB_TOKEN_KEY);
+    if (std::string::npos != nPos)
     {
-        nPos = nPos + oAuthLibDefaults::OAUTHLIB_TOKEN_KEY.length() + strlen( "=" );
-        strDummy = requestTokenResponse.substr( nPos );
-        nPos = strDummy.find( "&" );
-        if( std::string::npos != nPos )
+        nPos = nPos + oAuthLibDefaults::OAUTHLIB_TOKEN_KEY.length() + strlen("=");
+        strDummy = requestTokenResponse.substr(nPos);
+        nPos = strDummy.find("&");
+        if (std::string::npos != nPos)
         {
-            m_oAuthTokenKey = strDummy.substr( 0, nPos );
+            m_oAuthTokenKey = strDummy.substr(0, nPos);
         }
     }
 
     /* Get oauth_token_secret */
-    nPos = requestTokenResponse.find( oAuthLibDefaults::OAUTHLIB_TOKENSECRET_KEY );
-    if( std::string::npos != nPos )
+    nPos = requestTokenResponse.find(oAuthLibDefaults::OAUTHLIB_TOKENSECRET_KEY);
+    if (std::string::npos != nPos)
     {
-        nPos = nPos + oAuthLibDefaults::OAUTHLIB_TOKENSECRET_KEY.length() + strlen( "=" );
-        strDummy = requestTokenResponse.substr( nPos );
-        nPos = strDummy.find( "&" );
-        if( std::string::npos != nPos )
+        nPos = nPos + oAuthLibDefaults::OAUTHLIB_TOKENSECRET_KEY.length() + strlen("=");
+        strDummy = requestTokenResponse.substr(nPos);
+        nPos = strDummy.find("&");
+        if (std::string::npos != nPos)
         {
-            m_oAuthTokenSecret = strDummy.substr( 0, nPos );
+            m_oAuthTokenSecret = strDummy.substr(0, nPos);
         }
     }
 
     /* Get screen_name */
-    nPos = requestTokenResponse.find( oAuthLibDefaults::OAUTHLIB_SCREENNAME_KEY );
-    if( std::string::npos != nPos )
+    nPos = requestTokenResponse.find(oAuthLibDefaults::OAUTHLIB_SCREENNAME_KEY);
+    if (std::string::npos != nPos)
     {
-        nPos = nPos + oAuthLibDefaults::OAUTHLIB_SCREENNAME_KEY.length() + strlen( "=" );
-        strDummy = requestTokenResponse.substr( nPos );
+        nPos = nPos + oAuthLibDefaults::OAUTHLIB_SCREENNAME_KEY.length() + strlen("=");
+        strDummy = requestTokenResponse.substr(nPos);
         m_oAuthScreenName = strDummy;
     }
 
